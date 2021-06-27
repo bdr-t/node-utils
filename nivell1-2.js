@@ -1,9 +1,10 @@
 const fs = require("fs");
+const chalk = require('chalk');
 
-function createFile() {
+module.exports = function createFile() {
   fs.writeFile("nom.txt", "Bader", () => {
-    console.log("L'arxiu s'ha creat correctament");
+    console.log(chalk.black.bgGreen("L'arxiu s'ha creat correctament"));
   });
 };
 
-createFile()
+

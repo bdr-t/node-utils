@@ -1,5 +1,9 @@
 const crypto = require("crypto");
 const fs = require("fs");
+const chalk = require('chalk');
+
+const key = crypto.randomBytes(32);
+const iv = crypto.randomBytes(16);
 
 function creaArxiusCodificats() {
   let data = fs.readFileSync("./nom.txt", "utf8", (err, data) => {
@@ -11,18 +15,16 @@ function creaArxiusCodificats() {
   let hex = Buffer.from(data).toString("hex");
 
   fs.writeFile("nomHex.txt", hex, () => {
-    console.log("L'arxiu s'ha create correctament");
+    console.log(chalk.black.bgGreen("L'arxiu codificat amb hex s'ha creat correctament"));
   });
 
   fs.writeFile("nomBase64.txt", base64, () => {
-    console.log("L'arxiu s'ha creat correctament");
+    console.log(chalk.black.bgGreen("L'arxiu codificat amb base 64 s'ha creat correctament"));
   });
 }
 
 function encrypt(text) {
-  const key = crypto.randomBytes(32);
-  const iv = crypto.randomBytes(16);
-  let cipher = crypto.createCipheriv("aes-256-cbc", Buffer.from(key), iv);
+  let cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
   let encrypted = cipher.update(text);
 
   encrypted = cipher.final();
@@ -44,14 +46,13 @@ function creaArxiusEncriptats() {
   // Displays output
   const hex = encrypt(dataHex);
   const base64 = encrypt(dataBase64);
-  console.log(hex);
 
   fs.writeFileSync("nomHexEncriptat.txt", hex, () => {
-    console.log("L'arxiu s'ha create correctament");
+    console.log(chalk.black.bgGreen("L'arxiu encriptat amb hex s'ha creat correctament"));
   });
 
   fs.writeFileSync("nomBase64Encriptat.txt", base64, () => {
-    console.log("L'arxiu s'ha creat correctament");
+    console.log(chalk.black.bgGreen("L'arxiu encriptat amb base 64 s'ha creat correctament"));
   });
 
   fs.unlinkSync("./nomBase64.txt");
@@ -59,17 +60,11 @@ function creaArxiusEncriptats() {
 }
 
 function decrypt(text) {
-  let iv = crypto.randomBytes(16);
+  console.log(text)
   let encryptedText = Buffer.from(text.encryptedData, "hex");
-
-  // Creating Decipher
   let decipher = crypto.createDecipheriv("aes-256-cbc", Buffer.from(key), iv);
-
-  // Updating encrypted text
   let decrypted = decipher.update(encryptedText);
   decrypted = Buffer.concat([decrypted, decipher.final()]);
-
-  // returns data after decryption
   return decrypted.toString();
 }
 
@@ -82,7 +77,6 @@ function desencriptaArxius() {
       else return data;
     }
   );
-
   let dataBase64 = fs.readFileSync(
     "./nomBase64Encriptat.txt",
     "utf8",
@@ -92,13 +86,16 @@ function desencriptaArxius() {
     }
   );
 
-  // Displays output
-  let hexaaa = dataHex.toString('hex')
-  const hex = decrypt('asdjaskdjas');
-  // const base64 = decrypt(dataBase64.toString('base64'));
+  let hexaaa = dataHex.toString("sadas");
+  const hex = decrypt(hexaaa);
   console.log(hex);
 }
 
-// creaArxiusCodificats();
-// creaArxiusEncriptats();
-desencriptaArxius();
+// // creaArxiusCodificats();
+// // creaArxiusEncriptats();
+// desencriptaArxius();
+
+module.exports = {
+  creaArxiusCodificats,
+  creaArxiusEncriptats,
+};

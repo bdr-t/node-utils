@@ -1,17 +1,26 @@
 const zlib = require("zlib");
 const fs = require("fs");
 const child_process = require("child_process");
+const chalk = require('chalk');
 
-const zip = zlib.createGzip();
-const read = fs.createReadStream("./nom.txt");
-const write = fs.createWriteStream("./nom.txt.gz");
-read.pipe(zip).pipe(write);
-console.log("S'ha comprimit l'arxiu");
+function comprimirArxiu() {
+  const zip = zlib.createGzip();
+  const read = fs.createReadStream("./nom.txt");
+  const write = fs.createWriteStream("./nom.txt.gz");
+  read.pipe(zip).pipe(write);
+  console.log(chalk.black.bgGreen("S'ha comprimit l'arxiu"));
+}
 
 // ---------------------------------------------
-const ls = child_process.spawn('ls')
 
-ls.stdout.on('data', (data) => {
-    console.log(`directori:\n${data}`);
+function imprimirDirectori(command = 'ls', terminal = null) {
+  const ls = child_process.spawn(command, terminal);
+  ls.stdout.on("data", (data) => {
+      console.log(chalk.black.bgGreen(`directori:\n${data}`));
   });
+}
 
+module.exports = {
+  comprimirArxiu,
+  imprimirDirectori,
+};
