@@ -2,5 +2,5 @@
 
 ```bash 
   npm install 
-  npm index.js e
+  node index.js e
 ```
