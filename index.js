@@ -1,6 +1,7 @@
 const { combineFlagAndOptionalValue } = require("commander");
 const program = require("commander");
 const { prompt } = require("inquirer");
+const chalk = require('chalk');
 
 const timeoutRecursive = require("./nivell1-1");
 const createFile = require("./nivell1-2");
@@ -40,6 +41,8 @@ function promptExercicies() {
           } else{
             setTimeout(() => promptExercicies(),1000)
           }
+        }).catch(e => {
+          console.log(chalk.black.bgRed(e.message))
         })
     })
   program.parse(process.argv);
