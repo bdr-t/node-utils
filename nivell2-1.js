@@ -1,7 +1,7 @@
 const zlib = require("zlib");
 const fs = require("fs");
 const child_process = require("child_process");
-const chalk = require('chalk');
+const chalk = require("chalk");
 
 function comprimirArxiu() {
   const zip = zlib.createGzip();
@@ -13,11 +13,14 @@ function comprimirArxiu() {
 
 // ---------------------------------------------
 
-function imprimirDirectori(command = 'ls', terminal = null) {
+function imprimirDirectori(command = "ls", terminal = null) {
+  let directory = process.env.pwd;
+  process.chdir(process.env.HOME);
   const ls = child_process.spawn(command, terminal);
   ls.stdout.on("data", (data) => {
-      console.log(chalk.black.bgGreen(`directori:\n${data}`));
+    console.log(chalk.black.bgBlueBright(`directori:\n${data}`));
   });
+  process.chdir(directory);
 }
 
 module.exports = {
