@@ -1,6 +1,8 @@
 ## Node_utils 
 
 ```bash 
-  npm install 
+  npm install
+```
+```bash 
   node index.js e
 ```
